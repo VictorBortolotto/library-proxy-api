@@ -21,3 +21,6 @@ class ApiResponse:
   
   def conflict(message):
     return jsonify({"message": message}), 409
+  
+  def internal_server_error(message):
+    return jsonify({"message": message}), 500

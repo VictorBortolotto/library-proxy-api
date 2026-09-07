@@ -1,0 +1,134 @@
+from client.ClientClient import ClientClient
+from domain.dto.client.CreateClientDto import CreateClientDto
+from domain.dto.client.UpdateClientDto import UpdateClientDto
+from utils.ApiResponse import ApiResponse
+from domain.exceptions.ConflictException import ConflictException
+from domain.exceptions.NotFoundException import NotFoundException
+from flask import request
+
+class ClientController:
+
+  def __init__(self, app):
+    self.app = app
+    self.client_client = ClientClient()
+    self.default_route = "/client"
+    self.register_routes()
+
+  def register_routes(self):
+  
+    @self.app.route(self.default_route, methods=['POST'])
+    def create_client():
+
+      json = request.get_json()
+      client_dto = CreateClientDto(
+        json.get("user_id"), 
+        json.get("name"),
+        json.get("phone"),
+        json.get("address"),
+        json.get("zip_code"),
+        json.get("city"),
+        json.get("neighborhood"),
+        json.get("country")
+      )
+      
+      try:
+
+        response = self.client_client.create_client(client_dto)
+
+        client = {
+          "id": response.data.id,
+          "user_id": response.data.user_id,
+          "name": response.data.name,
+          "phone": response.data.phone,
+          "address": response.data.address,
+          "zip_code": response.data.zip_code,
+          "city": response.data.city,
+          "neighborhood": response.data.neighborhood,
+          "country": response.data.country,
+          "is_active": response.data.is_active
+        }
+
+        return ApiResponse.created(
+          response.message,
+          client
+        )
+
+      except ConflictException:
+        return ApiResponse.internal_server_error(
+          "Client already exists with this user."
+        )
+      
+      except Exception:
+        return ApiResponse.internal_server_error(
+          "Error to create client."
+        )
+  
+    @self.app.route(self.default_route + "/<id>", methods=['PUT'])
+    def update_client(id):
+
+      json = request.get_json()
+      client_dto = UpdateClientDto(
+        json.get("name"),
+        json.get("phone"),
+        json.get("address"),
+        json.get("zip_code"),
+        json.get("city"),
+        json.get("neighborhood"),
+        json.get("country")
+      )
+      
+      try:
+        response = self.client_client.update_client(id, client_dto)
+
+        client = {
+          "id": response.data.id,
+          "user_id": response.data.user_id,
+          "name": response.data.name,
+          "phone": response.data.phone,
+          "address": response.data.address,
+          "zip_code": response.data.zip_code,
+          "city": response.data.city,
+          "neighborhood": response.data.neighborhood,
+          "country": response.data.country,
+          "is_active": response.data.is_active
+        }
+
+        return ApiResponse.ok(
+          response.message,
+          client
+        )
+
+      except NotFoundException as error:
+
+        return ApiResponse.not_found(
+          str(error)
+        )
+      
+      except Exception as error:
+
+        return ApiResponse.internal_server_error(
+          str(error)
+        )
+      
+    @self.app.route(self.default_route + "/deactivate/<id>", methods=['PATCH'])
+    def deactivate_client(id):
+      
+      try:
+        response = self.client_client.deactivate_client(id)
+
+        return ApiResponse.ok(
+          response.message
+        )
+
+      except NotFoundException as error:
+
+        return ApiResponse.not_found(
+          str(error)
+        )
+      
+      except Exception as error:
+
+        return ApiResponse.internal_server_error(
+          str(error)
+        )
+      

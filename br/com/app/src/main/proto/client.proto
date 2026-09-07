@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package client;
+
+service ClientService {
+
+  rpc CreateClient(CreateClientRequest) returns (ClientResponse);
+  rpc UpdateClient(UpdateClientRequest) returns (ClientResponse);
+  rpc DeactivateClient(ClientIdRequest) returns (GenericResponse);
+
+}
+
+message ClientIdRequest {
+  int32 id = 1;
+}
+
+message CreateClientRequest {
+  int32 user_id = 1;
+  string name = 2;
+  string phone = 3;
+  string address = 4;
+  string zip_code = 5;
+  string city = 6;
+  string neighborhood = 7;
+  string country = 8;
+}
+
+message UpdateClientRequest {
+  int32 id = 1;
+  UpdateClientData client = 2;
+}
+
+message UpdateClientData {
+  string name = 1;
+  string phone = 2;
+  string address = 3;
+  string zip_code = 4;
+  string city = 5;
+  string neighborhood = 6;
+  string country = 7;
+}
+
+message ClientResponse {
+  Client data = 1;
+  string message = 2;
+}
+
+message Client {
+  int32 id = 1;
+  int32 user_id = 2;
+  string name = 3;
+  string phone = 4;
+  string address = 5;
+  string zip_code = 6;
+  string city = 7;
+  string neighborhood = 8;
+  string country = 9;
+  bool is_active = 10;
+}
+
+message GenericResponse {
+  string message = 1;
+}
