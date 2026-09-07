@@ -39,12 +39,23 @@ class UserServiceStub:
                 request_serializer=user__pb2.UserRequest.SerializeToString,
                 response_deserializer=user__pb2.UserResponse.FromString,
                 _registered_method=True)
+        self.ValidadeUser = channel.unary_unary(
+                '/user.UserService/ValidadeUser',
+                request_serializer=user__pb2.UserLoginRequest.SerializeToString,
+                response_deserializer=user__pb2.UserLoginResponse.FromString,
+                _registered_method=True)
 
 
 class UserServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def CreateUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ValidadeUser(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -57,6 +68,11 @@ def add_UserServiceServicer_to_server(servicer, server):
                     servicer.CreateUser,
                     request_deserializer=user__pb2.UserRequest.FromString,
                     response_serializer=user__pb2.UserResponse.SerializeToString,
+            ),
+            'ValidadeUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.ValidadeUser,
+                    request_deserializer=user__pb2.UserLoginRequest.FromString,
+                    response_serializer=user__pb2.UserLoginResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -86,6 +102,33 @@ class UserService:
             '/user.UserService/CreateUser',
             user__pb2.UserRequest.SerializeToString,
             user__pb2.UserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ValidadeUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/user.UserService/ValidadeUser',
+            user__pb2.UserLoginRequest.SerializeToString,
+            user__pb2.UserLoginResponse.FromString,
             options,
             channel_credentials,
             insecure,

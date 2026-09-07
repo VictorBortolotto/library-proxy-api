@@ -2,6 +2,7 @@ from client.UserClient import UserClient
 from domain.dto.user.UserDto import UserDto
 from utils.ApiResponse import ApiResponse
 from domain.exceptions.ConflictException import ConflictException
+from auth.JwtAuth import JwtAuth
 from flask import request
 
 class UserController:
@@ -9,6 +10,7 @@ class UserController:
   def __init__(self, app):
     self.app = app
     self.user_client = UserClient()
+    self.jwt = JwtAuth()
     self.default_route = "/user"
     self.register_routes()
 
@@ -19,18 +21,20 @@ class UserController:
 
       json = request.get_json()
 
-      bookDto = UserDto(
+      userDto = UserDto(
         json.get("email"),
         json.get("password")
       )
 
       try:
 
-        response = self.user_client.create_user(bookDto)
+        response = self.user_client.create_user(userDto)
+
+        token = self.jwt.gen_token(response.user_id, userDto.email)
 
         return ApiResponse.created(
           response.message,
-          response.message
+          {"token": token}
         )
 
       except ConflictException as error:
