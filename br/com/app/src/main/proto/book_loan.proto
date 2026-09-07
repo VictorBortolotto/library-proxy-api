@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package bookLoan;
+
+service BookLoanService {
+
+  rpc CreateBookLoan(BookLoanCreateRequest) returns (BookLoanCreateResponse);
+
+  rpc UpdateBookLoan(BookLoanUpdateRequest) returns (GenericResponse);
+
+  rpc FindBookLoanById(BookLoanIdRequest) returns (BookLoanResponse);
+
+  rpc FindAllBookLoan(BookLoanIdRequest) returns (BookLoanListResponse);
+}
+
+message BookLoanCreateRequest {
+  int32 book_id = 1;
+  int32 client_id = 2;
+  string loan_date = 3;
+  int32 loan_quantity = 4;
+  string expeted_return_date = 5;
+}
+
+message BookLoanCreateResponse {
+  BookLoanCreateData data = 1;
+  string message = 2;
+}
+
+message BookLoanCreateData {
+  int32 id = 1;
+  int32 book_id = 2;
+  int32 client_id = 3;
+  string loan_date = 4;
+  int32 loan_quantity = 5;
+  string expeted_return_date = 6;
+}
+
+message BookLoanListResponse {
+  repeated BookLoan data = 1;
+  string message = 2;
+}
+
+message BookLoanResponse {
+  BookLoan data = 1;
+  string message = 2;
+}
+
+message BookLoan {
+  int32 id = 1;
+  int32 book_id = 2;
+  int32 client_id = 3;
+  string loan_date = 4;
+  string expeted_return_date = 5;
+  string return_date = 6;
+  int32 returned_quantity = 7;
+  int32 loan_quantity = 8;
+  bool is_book_already_returned = 9;
+}
+
+message BookDeleteResponse {
+  string message = 1;
+}
+
+message BookLoanIdRequest {
+  int32 id = 1;
+}
+
+message BookLoanUpdateRequest {
+  BookLoanUpdateData data = 1;
+  int32 id = 2;
+}
+
+message BookLoanUpdateData {
+  int32 book_id = 1;
+  string return_date = 2;
+  bool is_book_already_returned = 3;
+  int32 returned_quantity = 4;
+}
+
+message GenericResponse {
+  string message = 1;
+}

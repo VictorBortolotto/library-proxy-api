@@ -2,6 +2,7 @@ from flask import Flask
 from controller.BookController import BookController
 from controller.UserController import UserController
 from controller.ClientController import ClientController
+from controller.BookLoanController import BookLoanController
 from flask_cors import CORS
 app = Flask(__name__)
 
@@ -17,6 +18,7 @@ def main():
   BookController(app)
   UserController(app)
   ClientController(app)
+  BookLoanController(app)
 
 main()
 
