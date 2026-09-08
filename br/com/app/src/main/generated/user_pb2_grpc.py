@@ -39,9 +39,9 @@ class UserServiceStub:
                 request_serializer=user__pb2.UserRequest.SerializeToString,
                 response_deserializer=user__pb2.UserResponse.FromString,
                 _registered_method=True)
-        self.ValidadeUser = channel.unary_unary(
-                '/user.UserService/ValidadeUser',
-                request_serializer=user__pb2.UserLoginRequest.SerializeToString,
+        self.ValidateUser = channel.unary_unary(
+                '/user.UserService/ValidateUser',
+                request_serializer=user__pb2.UserRequest.SerializeToString,
                 response_deserializer=user__pb2.UserLoginResponse.FromString,
                 _registered_method=True)
 
@@ -55,7 +55,7 @@ class UserServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ValidadeUser(self, request, context):
+    def ValidateUser(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -69,9 +69,9 @@ def add_UserServiceServicer_to_server(servicer, server):
                     request_deserializer=user__pb2.UserRequest.FromString,
                     response_serializer=user__pb2.UserResponse.SerializeToString,
             ),
-            'ValidadeUser': grpc.unary_unary_rpc_method_handler(
-                    servicer.ValidadeUser,
-                    request_deserializer=user__pb2.UserLoginRequest.FromString,
+            'ValidateUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.ValidateUser,
+                    request_deserializer=user__pb2.UserRequest.FromString,
                     response_serializer=user__pb2.UserLoginResponse.SerializeToString,
             ),
     }
@@ -113,7 +113,7 @@ class UserService:
             _registered_method=True)
 
     @staticmethod
-    def ValidadeUser(request,
+    def ValidateUser(request,
             target,
             options=(),
             channel_credentials=None,
@@ -126,8 +126,8 @@ class UserService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/user.UserService/ValidadeUser',
-            user__pb2.UserLoginRequest.SerializeToString,
+            '/user.UserService/ValidateUser',
+            user__pb2.UserRequest.SerializeToString,
             user__pb2.UserLoginResponse.FromString,
             options,
             channel_credentials,

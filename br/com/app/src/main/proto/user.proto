@@ -5,19 +5,13 @@ package user;
 service UserService {
 
   rpc CreateUser(UserRequest) returns (UserResponse);
-  rpc ValidadeUser(UserLoginRequest) returns (UserLoginResponse);
+  rpc ValidateUser(UserRequest) returns (UserLoginResponse);
 
 }
 
 message UserRequest {
   string email = 1;
   string password = 2;
-}
-
-message UserLoginRequest {
-  string email = 1;
-  string password = 2;
-  int32 user_id = 3;
 }
 
 message UserResponse {

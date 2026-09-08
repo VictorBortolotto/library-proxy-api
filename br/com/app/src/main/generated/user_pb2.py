@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nuser.proto\x12\x04user\".\n\x0bUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"D\n\x10UserLoginRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\x05\"0\n\x0cUserResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\"<\n\x11UserLoginResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x16\n\x0eis_valid_login\x18\x02 \x01(\x08\x32\x83\x01\n\x0bUserService\x12\x33\n\nCreateUser\x12\x11.user.UserRequest\x1a\x12.user.UserResponse\x12?\n\x0cValidadeUser\x12\x16.user.UserLoginRequest\x1a\x17.user.UserLoginResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nuser.proto\x12\x04user\".\n\x0bUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"0\n\x0cUserResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\"<\n\x11UserLoginResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x16\n\x0eis_valid_login\x18\x02 \x01(\x08\x32~\n\x0bUserService\x12\x33\n\nCreateUser\x12\x11.user.UserRequest\x1a\x12.user.UserResponse\x12:\n\x0cValidateUser\x12\x11.user.UserRequest\x1a\x17.user.UserLoginResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,12 +33,10 @@ if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_USERREQUEST']._serialized_start=20
   _globals['_USERREQUEST']._serialized_end=66
-  _globals['_USERLOGINREQUEST']._serialized_start=68
-  _globals['_USERLOGINREQUEST']._serialized_end=136
-  _globals['_USERRESPONSE']._serialized_start=138
-  _globals['_USERRESPONSE']._serialized_end=186
-  _globals['_USERLOGINRESPONSE']._serialized_start=188
-  _globals['_USERLOGINRESPONSE']._serialized_end=248
-  _globals['_USERSERVICE']._serialized_start=251
-  _globals['_USERSERVICE']._serialized_end=382
+  _globals['_USERRESPONSE']._serialized_start=68
+  _globals['_USERRESPONSE']._serialized_end=116
+  _globals['_USERLOGINRESPONSE']._serialized_start=118
+  _globals['_USERLOGINRESPONSE']._serialized_end=178
+  _globals['_USERSERVICE']._serialized_start=180
+  _globals['_USERSERVICE']._serialized_end=306
 # @@protoc_insertion_point(module_scope)
