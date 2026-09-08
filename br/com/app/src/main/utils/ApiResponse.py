@@ -19,6 +19,9 @@ class ApiResponse:
   def not_found(message):
     return jsonify({"message": message}), 404
   
+  def unauthorized(message):
+    return jsonify({"message": message}), 401
+  
   def conflict(message):
     return jsonify({"message": message}), 409
   

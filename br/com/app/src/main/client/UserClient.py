@@ -4,6 +4,8 @@ from generated import user_pb2
 from generated import user_pb2_grpc
 
 from domain.exceptions.ConflictException import ConflictException
+from domain.exceptions.NotFoundException import NotFoundException
+from domain.exceptions.UnauthorizedException import UnauthorizedException
 
 class UserClient:
 
@@ -26,6 +28,32 @@ class UserClient:
 
       if error.code() == grpc.StatusCode.ALREADY_EXISTS:
         raise ConflictException(
+          error.details()
+        )
+
+      raise error
+    
+  def login(self, userLoginDto):
+
+    request = user_pb2.UserRequest(
+      email=userLoginDto.email,
+      password=userLoginDto.password
+    )
+
+
+    try:
+
+      return self.stub.ValidateUser(request)
+    
+    except grpc.RpcError as error:
+
+      if error.code() == grpc.StatusCode.NOT_FOUND:
+        raise NotFoundException(
+          error.details()
+        )
+
+      if error.code() == grpc.StatusCode.UNAUTHENTICATED:
+        raise UnauthorizedException(
           error.details()
         )
 

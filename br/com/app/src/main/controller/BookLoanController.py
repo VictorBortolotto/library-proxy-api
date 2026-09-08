@@ -77,8 +77,6 @@ class BookLoanController:
         json.get("returned_quantity"),
       )
 
-      print(book_loan_dto)
-
       try:
 
         response = self.book_client.update_book_loan(id, book_loan_dto)

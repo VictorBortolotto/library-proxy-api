@@ -22,20 +22,21 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nuser.proto\x12\x04user\x1a\x1bgoogle/protobuf/empty.proto\".\n\x0bUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"\x1f\n\x0cUserResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2B\n\x0bUserService\x12\x33\n\nCreateUser\x12\x11.user.UserRequest\x1a\x12.user.UserResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nuser.proto\x12\x04user\".\n\x0bUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"0\n\x0cUserResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\"<\n\x11UserLoginResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x16\n\x0eis_valid_login\x18\x02 \x01(\x08\x32~\n\x0bUserService\x12\x33\n\nCreateUser\x12\x11.user.UserRequest\x1a\x12.user.UserResponse\x12:\n\x0cValidateUser\x12\x11.user.UserRequest\x1a\x17.user.UserLoginResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'user_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_USERREQUEST']._serialized_start=49
-  _globals['_USERREQUEST']._serialized_end=95
-  _globals['_USERRESPONSE']._serialized_start=97
-  _globals['_USERRESPONSE']._serialized_end=128
-  _globals['_USERSERVICE']._serialized_start=130
-  _globals['_USERSERVICE']._serialized_end=196
+  _globals['_USERREQUEST']._serialized_start=20
+  _globals['_USERREQUEST']._serialized_end=66
+  _globals['_USERRESPONSE']._serialized_start=68
+  _globals['_USERRESPONSE']._serialized_end=116
+  _globals['_USERLOGINRESPONSE']._serialized_start=118
+  _globals['_USERLOGINRESPONSE']._serialized_end=178
+  _globals['_USERSERVICE']._serialized_start=180
+  _globals['_USERSERVICE']._serialized_end=306
 # @@protoc_insertion_point(module_scope)
