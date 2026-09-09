@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package zipCode;
+
+service ZipCodeService {
+
+  rpc FindDataByZipCode(ZipCodeRequest) returns (ZipCodeResponse);
+
+}
+
+message ZipCodeRequest {
+  string zip_code = 1;
+}
+
+message ZipCodeResponse {
+  ZipCodeData data = 1;
+  string message = 2;
+}
+
+message ZipCodeData {
+  string address = 1;
+  string zip_code = 2;
+  string city = 3;
+  string neighborhood = 4;
+}
