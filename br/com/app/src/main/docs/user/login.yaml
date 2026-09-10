@@ -1,0 +1,56 @@
+tags:
+  - User
+
+summary: Create a new user
+
+consumes:
+  - application/json
+
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: test@teste.com.br
+        password:
+          type: string
+          example: 123456
+
+responses:
+  200:
+    description: Login
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Authenticated with success
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4LCJlbWFpbCI6InRlc3RlOEB0ZXN0ZS5jb20uYnIiLCJleHAiOjE3ODkwODMwOTF9.iI1xNRTilto9E5Lyvc6kbvtKZReuhkRQE_9IoMelog8
+  404:
+    description: User not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User not found.
+  401:
+    description: Wrong email or password.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Wrong email or password.

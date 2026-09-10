@@ -1,0 +1,60 @@
+tags:
+  - BookLoan
+
+summary: Find book loan by ID
+
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: integer
+    description: Book loan ID
+
+responses:
+  200:
+    description: Find book by ID.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            book_id:
+              type: integer
+              example: 1
+            client_id:
+              type: integer
+              example: 1
+            loan_date:
+              type: string
+              example: 2026-01-09 00:00:00
+            expeted_return_date:
+              type: string
+              example: 2026-01-09 00:00:00
+            return_date:
+              type: string
+              example: 2026-01-09 00:00:00
+            returned_quantity:
+              type: integer
+              example: 1
+            loan_quantity:
+              type: integer
+              example: 1
+            is_book_already_returned:
+              type: boolean
+              example: true
+  404:
+    description: Book or loan not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Book or loan not found.

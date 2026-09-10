@@ -1,0 +1,45 @@
+tags:
+  - User
+
+summary: Create a new user
+
+consumes:
+  - application/json
+
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@teste.com.br
+        password:
+          type: string
+          example: 123456
+
+responses:
+  201:
+    description: Create user.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User created with success.
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4LCJlbWFpbCI6InRlc3RlOEB0ZXN0ZS5jb20uYnIiLCJleHAiOjE3ODkwODMwOTF9.iI1xNRTilto9E5Lyvc6kbvtKZReuhkRQE_9IoMelog8
+  409:
+    description: User already exists.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User already exists.

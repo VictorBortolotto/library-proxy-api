@@ -5,6 +5,8 @@ from domain.exceptions.ConflictException import ConflictException
 from domain.exceptions.NotFoundException import NotFoundException
 from domain.exceptions.UnauthorizedException import UnauthorizedException
 from auth.JwtAuth import JwtAuth
+from flasgger import swag_from
+import os
 from flask import request
 
 class UserController:
@@ -19,6 +21,7 @@ class UserController:
   def register_routes(self):
 
     @self.app.route(self.default_route, methods=['POST'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/user/create_user.yaml'))
     def create_user():
 
       json = request.get_json()
@@ -52,6 +55,7 @@ class UserController:
         )
       
     @self.app.route(self.default_route + "/login", methods=['POST'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/user/login.yaml'))
     def login():
 
       json = request.get_json()

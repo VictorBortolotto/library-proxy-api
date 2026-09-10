@@ -1,0 +1,100 @@
+tags:
+  - Client
+
+summary: Create client
+
+consumes:
+  - application/json
+
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Willian
+        phone:
+          type: string
+          example: 6835887857
+        address:
+          type: string
+          example: Santa Bárbara
+        zip_code:
+          type: string
+          example: 88870000
+        city:
+          type: string
+          example: Santa Bárbara
+        neighborhood:
+          type: string
+          example: Centro
+        country:
+          type: string
+          example: Brazil
+
+responses:
+  201:
+    description: Create client.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Client created with success.
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            user_id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: Willian
+            phone:
+              type: string
+              example: 6835887857
+            address:
+              type: string
+              example: Santa Bárbara
+            zip_code:
+              type: string
+              example: 88870000
+            city:
+              type: string
+              example: Santa Bárbara
+            neighborhood:
+              type: string
+              example: Centro
+            country:
+              type: string
+              example: Brazil
+            is_active:
+              type: boolean
+              example: true
+  409:
+    description: Client already exists with this user.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Client already exists with this user.
+  500:
+    description: Error to create client.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Error to create client.

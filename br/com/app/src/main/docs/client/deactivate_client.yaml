@@ -1,0 +1,41 @@
+tags:
+  - Client
+
+summary: Deactivate client
+
+consumes:
+  - application/json
+
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: integer
+    description: Client ID
+
+responses:
+  200:
+    description: Client updated with success.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Client updated with success.
+  404:
+    description: Client not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Client not found.
+  500:
+    description: Error to update client.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Error to update client.

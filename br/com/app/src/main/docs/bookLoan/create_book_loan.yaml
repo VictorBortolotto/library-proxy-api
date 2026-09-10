@@ -1,0 +1,87 @@
+tags:
+  - BookLoan
+
+summary: Create book loan
+
+consumes:
+  - application/json
+
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        book_id:
+          type: integer
+          example: 1
+        client_id:
+          type: integer
+          example: 1
+        loan_date:
+          type: string
+          example: 2026-01-09 00:00:00
+        loan_quantity:
+          type: integer
+          example: 1
+        expeted_return_date:
+          type: string
+          example: 2026-01-09 00:00:00
+
+responses:
+  201:
+    description: Create Book Loan.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Book loan with success.
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            book_id:
+              type: integer
+              example: 1
+            client_id:
+              type: integer
+              example: 1
+            loan_date:
+              type: string
+              example: 2026-01-09 00:00:00
+            loan_quantity:
+              type: integer
+              example: 1
+            expeted_return_date:
+              type: string
+              example: 2026-01-09 00:00:00
+  404:
+    description: Book not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Book not found.
+  409:
+    description: Insufficient copies available for loan.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Insufficient copies available for loan.
+  500:
+    description: Error to update book quantity.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Error to update book quantity.

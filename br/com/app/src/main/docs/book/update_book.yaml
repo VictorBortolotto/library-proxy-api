@@ -1,0 +1,73 @@
+tags:
+  - Book
+
+summary: Update book
+
+consumes:
+  - application/json
+
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: integer
+    description: Book ID
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        title:
+          type: string
+          example: My Book
+        description:
+          type: string
+          example: Book Description
+        quantity:
+          type: integer
+          example: 1.0
+
+responses:
+  200:
+    description: Book updated with success.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Book updated with success.
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            title:
+              type: string
+              example: My Book
+            description:
+              type: string
+              example: Book Description
+            quantity:
+              type: integer
+              example: 1
+  404:
+    description: Book not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Book not found.
+  500:
+    description: Error to update book.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Error to update book.

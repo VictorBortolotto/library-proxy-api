@@ -1,0 +1,45 @@
+tags:
+  - Book
+
+summary: Find book by ID
+
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: integer
+    description: Book ID
+
+responses:
+  200:
+    description: Find book by ID.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            title:
+              type: string
+              example: My Book
+            description:
+              type: string
+              example: Book Description
+            quantity:
+              type: integer
+              example: 1
+  404:
+    description: Book not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Book not found.

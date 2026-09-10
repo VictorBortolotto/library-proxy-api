@@ -4,6 +4,7 @@ from controller.UserController import UserController
 from controller.ClientController import ClientController
 from controller.BookLoanController import BookLoanController
 from controller.ZipCodeController import ZipCodeController
+from config.SwaggerConfig import SwaggerConfig
 from flask_cors import CORS
 app = Flask(__name__)
 
@@ -14,6 +15,8 @@ CORS(app, resources={
         "allow_headers": ["Content-Type", "Authorization"]
     }
 })
+
+swagger = SwaggerConfig().config(app)
 
 def main():
   BookController(app)

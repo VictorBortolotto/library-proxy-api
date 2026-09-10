@@ -1,0 +1,103 @@
+tags:
+  - Client
+
+summary: Create client
+
+consumes:
+  - application/json
+
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: integer
+    description: Client ID
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: Willian
+        phone:
+          type: string
+          example: 6835887857
+        address:
+          type: string
+          example: Santa Maria
+        zip_code:
+          type: string
+          example: 88870000
+        city:
+          type: string
+          example: Santa Maria
+        neighborhood:
+          type: string
+          example: Centro
+        country:
+          type: string
+          example: Brazil
+
+responses:
+  200:
+    description: Update client.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Client updated with success.
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            user_id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: Willian
+            phone:
+              type: string
+              example: 6835887857
+            address:
+              type: string
+              example: Santa Maria
+            zip_code:
+              type: string
+              example: 88870000
+            city:
+              type: string
+              example: Santa Maria
+            neighborhood:
+              type: string
+              example: Centro
+            country:
+              type: string
+              example: Brazil
+            is_active:
+              type: boolean
+              example: true
+  404:
+    description: Client not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Client not found.
+  500:
+    description: Error to create client.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Error to update client.
