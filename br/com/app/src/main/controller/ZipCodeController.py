@@ -2,7 +2,8 @@ from client.ZipCodeClient import ZipCodeClient
 from utils.ApiResponse import ApiResponse
 from domain.dto.zipCode.ZipCodeDataDto import ZipCodeDataDto
 from domain.exceptions.NotFoundException import NotFoundException
-from flask import request
+from flasgger import swag_from
+import os
 
 class ZipCodeController:
 
@@ -13,7 +14,9 @@ class ZipCodeController:
     self.register_routes()
 
   def register_routes(self):
+
     @self.app.route(self.default_route + "/<cep>", methods=['GET'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/zipCode/zip_code.yaml'))
     def find_zip_code_data(cep):
       try:
 

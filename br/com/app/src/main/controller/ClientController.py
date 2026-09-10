@@ -4,6 +4,8 @@ from domain.dto.client.UpdateClientDto import UpdateClientDto
 from utils.ApiResponse import ApiResponse
 from domain.exceptions.ConflictException import ConflictException
 from domain.exceptions.NotFoundException import NotFoundException
+from flasgger import swag_from
+import os
 from flask import request
 
 class ClientController:
@@ -17,6 +19,7 @@ class ClientController:
   def register_routes(self):
   
     @self.app.route(self.default_route, methods=['POST'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/client/create_client.yaml'))
     def create_client():
 
       json = request.get_json()
@@ -64,6 +67,7 @@ class ClientController:
         )
   
     @self.app.route(self.default_route + "/<id>", methods=['PUT'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/client/update_client.yaml'))
     def update_client(id):
 
       json = request.get_json()
@@ -111,6 +115,7 @@ class ClientController:
         )
       
     @self.app.route(self.default_route + "/deactivate/<id>", methods=['PATCH'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/client/deactivate_client.yaml'))
     def deactivate_client(id):
       
       try:

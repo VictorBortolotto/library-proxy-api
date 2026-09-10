@@ -1,0 +1,45 @@
+tags:
+  - ZipCode
+
+summary: Find Zip Code data
+
+parameters:
+  - name: cep
+    in: path
+    required: true
+    schema:
+      type: integer
+    description: Find Zip Code data
+    
+responses:
+  200:
+    description: Find book by ID.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 
+        data:
+          type: object
+          properties:
+            address:
+              type: string
+              example: Praça da Sé
+            zip_code:
+              type: string
+              example: 01001-000
+            city:
+              type: string
+              example: São Paulo
+            neighborhood:
+              type: string
+              example: Sé
+  404:
+    description: Zip code data not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Zip code data not found.

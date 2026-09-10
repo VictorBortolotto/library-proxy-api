@@ -1,0 +1,41 @@
+tags:
+  - Book
+
+summary: Find all books
+
+responses:
+  200:
+    description: Find all books.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 
+        data:
+          type: array
+          items:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                title:
+                  type: string
+                  example: My Book
+                description:
+                  type: string
+                  example: Book Description
+                quantity:
+                  type: integer
+                  example: 1
+  404:
+    description: Books not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Books not found.

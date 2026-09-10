@@ -6,6 +6,9 @@ from domain.exceptions.ConflictException import ConflictException
 from domain.exceptions.NotFoundException import NotFoundException
 from flask import request
 
+from flasgger import swag_from
+import os
+
 class BookController:
 
   def __init__(self, app):
@@ -17,6 +20,7 @@ class BookController:
   def register_routes(self):
 
     @self.app.route(self.default_route, methods=['POST'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/book/create_book.yaml'))
     def create_book():
 
       json = request.get_json()
@@ -50,6 +54,7 @@ class BookController:
         )
       
     @self.app.route(self.default_route + "/<id>", methods=['PUT'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/book/update_book.yaml'))
     def update_book(id):
 
       json = request.get_json()
@@ -89,6 +94,7 @@ class BookController:
         )
       
     @self.app.route(self.default_route, methods=['GET'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/book/find_all_book.yaml'))
     def find_all_book():
       try:
 
@@ -116,6 +122,7 @@ class BookController:
         )
       
     @self.app.route(self.default_route + "/<id>", methods=['GET'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/book/find_book_by_id.yaml'))
     def find_book_by_id(id):
       try:
 
@@ -140,6 +147,7 @@ class BookController:
         )
 
     @self.app.route(self.default_route + "/<id>", methods=['DELETE'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/book/delete_book.yaml'))
     def delete_book(id):
       try:
 

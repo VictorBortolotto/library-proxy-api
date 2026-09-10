@@ -1,0 +1,59 @@
+tags:
+  - Book
+
+summary: Create a new book
+
+consumes:
+  - application/json
+
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        title:
+          type: string
+          example: My Book
+        description:
+          type: string
+          example: Book Description
+        quantity:
+          type: integer
+          example: 1.0
+
+responses:
+  201:
+    description: Book created with success.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Book created with success.
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            title:
+              type: string
+              example: My Book
+            description:
+              type: string
+              example: Book Description
+            quantity:
+              type: integer
+              example: 1
+  409:
+    description: Book already exists.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Book already exists.

@@ -7,6 +7,8 @@ from utils.ApiResponse import ApiResponse
 from domain.exceptions.ConflictException import ConflictException
 from domain.exceptions.NotFoundException import NotFoundException
 from domain.exceptions.InsufficientQuantityException import InsufficientQuantityException
+from flasgger import swag_from
+import os
 from flask import request
 
 class BookLoanController:
@@ -20,6 +22,7 @@ class BookLoanController:
   def register_routes(self):
 
     @self.app.route(self.default_route, methods=['POST'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/bookLoan/create_book_loan.yaml'))
     def create_book_loan():
 
       json = request.get_json()
@@ -66,6 +69,7 @@ class BookLoanController:
         )
       
     @self.app.route(self.default_route + "/<id>", methods=['PUT'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/bookLoan/update_book_loan.yaml'))
     def update_book_loan(id):
 
       json = request.get_json()
@@ -90,7 +94,7 @@ class BookLoanController:
           str(error)
         )
       
-      except InsufficientQuantityException as error:
+      except ConflictException as error:
         return ApiResponse.conflict(
           str(error)
         )
@@ -101,6 +105,7 @@ class BookLoanController:
         )
       
     @self.app.route(self.default_route + "/<id>", methods=['GET'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/bookLoan/find_book_loan_by_id.yaml'))
     def find_book_loan_by_id(id):
 
       try:
@@ -130,6 +135,7 @@ class BookLoanController:
         )
       
     @self.app.route(self.default_route + "/all/<idClient>", methods=['GET'])
+    @swag_from(os.path.join(os.getcwd(), 'docs/bookLoan/find_all_book_loan_by_id.yaml'))
     def find_all_book_loan(idClient):
 
       try:
