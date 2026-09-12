@@ -1,1 +1,348 @@
-# library-proxy-api
+# Library Proxy API
+
+A **Library** é uma aplicação para gerenciamento de empréstimos de livros.
+
+Este repositório contém a **API Proxy** da aplicação, responsável por atuar como porta de entrada para os clientes e encaminhar as requisições para a API responsável pelas regras de negócio.
+
+A API Proxy possui como principais responsabilidades a **autenticação dos usuários**, **geração e validação de tokens JWT** e a comunicação com a API de regras de negócio utilizando **gRPC**.
+
+---
+
+## Arquitetura
+
+A aplicação é composta por duas APIs:
+
+* **Library Proxy API**: porta de entrada da aplicação, responsável pela autenticação, geração/validação de tokens e encaminhamento das requisições.
+* **Library API**: responsável pelas regras de negócio, acesso ao banco de dados e integração com serviços externos.
+
+A comunicação entre as duas APIs é realizada utilizando **gRPC**.
+
+```text
+                    ┌──────────────────────┐
+                    │       Cliente        │
+                    └──────────┬───────────┘
+                               │
+                               │ HTTP
+                               ▼
+                    ┌──────────────────────┐
+                    │  Library Proxy API   │
+                    │      :8081           │
+                    │                      │
+                    │ • Autenticação       │
+                    │ • JWT                │
+                    │ • Validação          │
+                    │ • Proxy              │
+                    └──────────┬───────────┘
+                               │
+                               │ gRPC
+                               ▼
+                    ┌──────────────────────┐
+                    │     Library API      │
+                    │      :50051          │
+                    │                      │
+                    │ • Regras de negócio  │
+                    │ • Banco de dados     │
+                    │ • Serviços externos  │
+                    └──────────────────────┘
+```
+
+---
+
+## Funcionalidades
+
+A API disponibiliza funcionalidades relacionadas ao gerenciamento da biblioteca.
+
+### Usuários
+
+* Criação de usuários
+* Login
+* Geração de tokens JWT
+* Autenticação das requisições
+
+### Clientes
+
+* Cadastro de clientes
+* Atualização de clientes
+* Desativação de clientes
+
+### Livros
+
+* Cadastro de livros
+* Atualização de livros
+* Consulta de livros
+* Exclusão de livros
+
+### Empréstimos
+
+* Cadastro de empréstimos de livros
+* Atualização de empréstimos
+* Consulta de empréstimos
+
+---
+
+## Tecnologias utilizadas
+
+* **Python**
+* **Flask** — desenvolvimento da API HTTP
+* **PyJWT** — geração e validação de tokens JWT
+* **gRPC** — comunicação entre a API Proxy e a API de regras de negócio
+* **Docker** — containerização da aplicação
+* **Docker Compose** — gerenciamento dos containers
+* **Swagger** — documentação da API
+
+---
+
+# Como executar o projeto
+
+Existem duas formas de executar o projeto:
+
+1. Utilizando **Docker**
+2. Executando diretamente no ambiente local
+
+> Para utilizar todas as funcionalidades da aplicação, a **Library API** também deverá estar em execução, pois a comunicação entre as APIs é realizada através de gRPC.
+
+---
+
+# Executando com Docker
+
+## Pré-requisitos
+
+Antes de iniciar, certifique-se de possuir instalado:
+
+* Docker
+* Docker Compose
+
+## 1. Clonar o repositório
+
+```bash
+git clone https://github.com/VictorBortolotto/library-proxy-api.git
+```
+
+## 2. Acessar a pasta do projeto
+
+```bash
+cd library-proxy-api
+```
+
+## 3. Acessar a pasta do Docker
+
+```bash
+cd docker
+```
+
+## 4. Construir e iniciar o container
+
+```bash
+docker compose up --build
+```
+
+Após a execução, a API Proxy estará disponível na porta **8081**.
+
+Uma saída semelhante à seguinte deverá ser apresentada:
+
+```text
+library-proxy  | * Serving Flask app 'br.com.app.src.main.Main'
+library-proxy  | * Debug mode: off
+library-proxy  | WARNING: This is a development server. Do not use it in a production deployment.
+library-proxy  | * Running on all addresses (0.0.0.0)
+library-proxy  | * Running on http://127.0.0.1:8081
+library-proxy  | * Running on http://172.19.0.2:8081
+library-proxy  | Press CTRL+C to quit
+```
+
+A API poderá ser acessada através de:
+
+```text
+http://localhost:8081
+```
+
+Para interromper os containers:
+
+```bash
+docker compose down
+```
+
+---
+
+# Executando sem Docker
+
+Também é possível executar a aplicação diretamente no ambiente local.
+
+## 1. Clonar o repositório
+
+```bash
+git clone https://github.com/VictorBortolotto/library-proxy-api.git
+```
+
+## 2. Acessar a pasta do projeto
+
+```bash
+cd library-proxy-api
+```
+
+## 3. Instalar as dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+## 4. Acessar a pasta principal da aplicação
+
+```bash
+cd br/com/app/src/main
+```
+
+## 5. Iniciar a aplicação
+
+```bash
+flask --app Main run -p 8081
+```
+
+Após iniciar, deverá ser apresentada uma saída semelhante a:
+
+```text
+* Serving Flask app 'Main'
+* Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment.
+* Running on http://127.0.0.1:8081
+Press CTRL+C to quit
+```
+
+A API estará disponível em:
+
+```text
+http://localhost:8081
+```
+
+---
+
+# Configuração da comunicação gRPC
+
+A comunicação entre a **Library Proxy API** e a **Library API** é realizada através do gRPC.
+
+A configuração do endereço do servidor gRPC depende da forma como a aplicação está sendo executada.
+
+## Utilizando Docker
+
+Quando as aplicações estão sendo executadas através do Docker Compose, o endereço utilizado deve ser o **nome do serviço/container definido no Docker Compose**:
+
+```python
+channel = grpc.insecure_channel("library-api:50051")
+```
+
+Nesse cenário, `library-api` é resolvido internamente pela rede do Docker Compose.
+
+## Executando localmente
+
+Quando a aplicação é executada diretamente no computador, sem Docker, o endereço deve apontar para o servidor local:
+
+```python
+channel = grpc.insecure_channel("localhost:50051")
+```
+
+> **Importante:** caso a Library API esteja executando localmente na porta `50051`, utilize `localhost:50051`.
+
+---
+
+# Regeneração dos arquivos gRPC
+
+Os arquivos Python utilizados pelo gRPC são gerados a partir dos arquivos `.proto` localizados em:
+
+```text
+br/com/app/src/main/proto
+```
+
+Caso seja necessário regenerar os arquivos da pasta `generated`, execute os comandos abaixo a partir da raiz do projeto.
+
+### Book Loan
+
+```bash
+python -m grpc_tools.protoc -I=br/com/app/src/main/proto --python_out=br/com/app/src/main/generated --grpc_python_out=br/com/app/src/main/generated br/com/app/src/main/proto/book_loan.proto
+```
+
+### Book
+
+```bash
+python -m grpc_tools.protoc -I=br/com/app/src/main/proto --python_out=br/com/app/src/main/generated --grpc_python_out=br/com/app/src/main/generated br/com/app/src/main/proto/book.proto
+```
+
+### Client
+
+```bash
+python -m grpc_tools.protoc -I=br/com/app/src/main/proto --python_out=br/com/app/src/main/generated --grpc_python_out=br/com/app/src/main/generated br/com/app/src/main/proto/client.proto
+```
+
+### User
+
+```bash
+python -m grpc_tools.protoc -I=br/com/app/src/main/proto --python_out=br/com/app/src/main/generated --grpc_python_out=br/com/app/src/main/generated br/com/app/src/main/proto/user.proto
+```
+
+### Zip Code
+
+```bash
+python -m grpc_tools.protoc -I=br/com/app/src/main/proto --python_out=br/com/app/src/main/generated --grpc_python_out=br/com/app/src/main/generated br/com/app/src/main/proto/zip_code.proto
+```
+
+---
+
+# Ajuste dos imports dos arquivos gerados
+
+Dependendo da versão do `grpc_tools` e da estrutura do projeto, pode ser necessário ajustar os imports dos arquivos `*_pb2_grpc.py` gerados.
+
+Por exemplo, caso seja gerado:
+
+```python
+import zip_code_pb2 as zip__code__pb2
+```
+
+altere para:
+
+```python
+from generated import zip_code_pb2 as zip__code__pb2
+```
+
+Esse ajuste pode ser necessário para que os arquivos gerados encontrem corretamente os módulos dentro do pacote `generated`.
+
+---
+
+# Documentação da API
+
+A API possui documentação através do **Swagger**.
+
+Após iniciar a aplicação, a documentação poderá ser acessada através da rota configurada para o Swagger.
+
+> A URL exata da documentação depende da configuração atual do projeto.
+
+---
+
+# Portas utilizadas
+
+| Serviço           | Protocolo |   Porta |
+| ----------------- | --------- | ------: |
+| Library Proxy API | HTTP      |  `8081` |
+| Library API       | gRPC      | `50051` |
+
+---
+
+# Observações
+
+* A **Library Proxy API** é a porta de entrada da aplicação.
+* A autenticação e o gerenciamento dos tokens JWT são realizados no Proxy.
+* As regras de negócio são executadas pela **Library API**.
+* A comunicação entre as APIs utiliza **gRPC**.
+* Quando executadas através do Docker Compose, as APIs podem se comunicar utilizando os nomes dos respectivos serviços.
+* Quando executadas localmente, a comunicação deve utilizar `localhost`.
+* Para executar as funcionalidades que dependem da API de regras de negócio, é necessário que a **Library API** esteja em execução.
+
+---
+
+# Autor
+
+**Victor Augusto Campos Bortolotto**
+
+![Victor Augusto Campos Bortolotto](https://avatars.githubusercontent.com/u/50971139?v=4)
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat-square\&logo=linkedin\&logoColor=white)](https://www.linkedin.com/in/victor-augusto-campos-bortolotto/)
+
+[![Gmail](https://img.shields.io/badge/victorcamposbortolottowork%40gmail.com-c14438?style=flat-square\&logo=gmail\&logoColor=white)](mailto:victorcamposbortolottowork@gmail.com)
