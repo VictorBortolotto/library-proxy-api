@@ -312,11 +312,15 @@ Esse ajuste pode ser necessário para que os arquivos gerados encontrem corretam
 
 # Documentação da API
 
-A API possui documentação através do **Swagger**.
+A aplicação possui documentação da API através do **Swagger**.
 
-Após iniciar a aplicação, a documentação poderá ser acessada através da rota configurada para o Swagger.
+Após iniciar a aplicação, a documentação pode ser acessada pelo seguinte endereço:
 
-> A URL exata da documentação depende da configuração atual do projeto.
+```text
+http://localhost:8081/apidocs/#/
+```
+
+Através do Swagger é possível visualizar os endpoints disponíveis, seus parâmetros, respostas e realizar requisições diretamente pela interface de documentação.
 
 ---
 
