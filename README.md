@@ -341,7 +341,7 @@ Após iniciar a aplicação, a documentação poderá ser acessada através da r
 
 **Victor Augusto Campos Bortolotto**
 
-![Victor Augusto Campos Bortolotto](https://avatars.githubusercontent.com/u/50971139?v=4)
+<img style="width: 100px; height: 100px" src="https://avatars.githubusercontent.com/u/50971139?v=4" alt=""/>
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat-square\&logo=linkedin\&logoColor=white)](https://www.linkedin.com/in/victor-augusto-campos-bortolotto/)
 
