@@ -1,10 +1,14 @@
 # Library Proxy API
 
-A **Library** é uma aplicação para gerenciamento de empréstimos de livros.
+A **Library** é uma aplicação desenvolvida como **MVP (Minimum Viable Product)** para fins acadêmicos, no contexto de uma **Pós-Graduação em Engenharia de Software**.
+
+O projeto tem como objetivo demonstrar, de forma prática, conceitos de arquitetura de software, comunicação entre APIs, autenticação, gerenciamento de empréstimos e utilização de diferentes tecnologias e padrões de desenvolvimento.
 
 Este repositório contém a **API Proxy** da aplicação, responsável por atuar como porta de entrada para os clientes e encaminhar as requisições para a API responsável pelas regras de negócio.
 
 A API Proxy possui como principais responsabilidades a **autenticação dos usuários**, **geração e validação de tokens JWT** e a comunicação com a API de regras de negócio utilizando **gRPC**.
+
+> **Nota:** Este projeto possui finalidade **exclusivamente acadêmica e demonstrativa**. As funcionalidades, regras de negócio e decisões de arquitetura foram definidas para atender aos objetivos do MVP e **não representam necessariamente requisitos, regras ou necessidades de um sistema real de gerenciamento de bibliotecas**. O projeto não deve ser considerado uma solução pronta para utilização em ambiente de produção.
 
 ---
 
