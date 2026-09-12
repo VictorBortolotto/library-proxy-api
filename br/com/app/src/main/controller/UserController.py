@@ -21,7 +21,7 @@ class UserController:
   def register_routes(self):
 
     @self.app.route(self.default_route, methods=['POST'])
-    @swag_from(os.path.join(os.getcwd(), 'docs/user/create_user.yaml'))
+    @swag_from(os.path.abspath(os.path.join(os.path.dirname(__file__), '../docs/user/create_user.yaml')))
     def create_user():
 
       json = request.get_json()
@@ -55,7 +55,7 @@ class UserController:
         )
       
     @self.app.route(self.default_route + "/login", methods=['POST'])
-    @swag_from(os.path.join(os.getcwd(), 'docs/user/login.yaml'))
+    @swag_from(os.path.abspath(os.path.join(os.path.dirname(__file__), '../docs/user/login.yaml')))
     def login():
 
       json = request.get_json()

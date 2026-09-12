@@ -21,7 +21,7 @@ class ZipCodeController:
   def register_routes(self):
 
     @self.app.route(self.default_route + "/<cep>", methods=['GET'])
-    @swag_from(os.path.join(os.getcwd(), 'docs/zipCode/zip_code.yaml'))
+    @swag_from(os.path.abspath(os.path.join(os.path.dirname(__file__), '../docs/zipCode/zip_code.yaml')))
     def find_zip_code_data(cep):
       try:
         token = self.jwt_auth.get_token(request)

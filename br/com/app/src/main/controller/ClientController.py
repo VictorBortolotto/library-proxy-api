@@ -23,7 +23,7 @@ class ClientController:
   def register_routes(self):
   
     @self.app.route(self.default_route, methods=['POST'])
-    @swag_from(os.path.join(os.getcwd(), 'docs/client/create_client.yaml'))
+    @swag_from(os.path.abspath(os.path.join(os.path.dirname(__file__), '../docs/client/create_client.yaml')))
     def create_client():
 
       json = request.get_json()
@@ -84,7 +84,7 @@ class ClientController:
 
       
     @self.app.route(self.default_route + "/<id>", methods=['PUT'])
-    @swag_from(os.path.join(os.getcwd(), 'docs/client/update_client.yaml'))
+    @swag_from(os.path.abspath(os.path.join(os.path.dirname(__file__), '../docs/client/update_client.yaml')))
     def update_client(id):
 
       json = request.get_json()
@@ -143,7 +143,7 @@ class ClientController:
         )
       
     @self.app.route(self.default_route + "/deactivate/<id>", methods=['PATCH'])
-    @swag_from(os.path.join(os.getcwd(), 'docs/client/deactivate_client.yaml'))
+    @swag_from(os.path.abspath(os.path.join(os.path.dirname(__file__), '../docs/client/deactivate_client.yaml')))
     def deactivate_client(id):
       
       try:
