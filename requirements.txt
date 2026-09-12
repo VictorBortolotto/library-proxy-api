@@ -1,0 +1,6 @@
+Flask
+Flask-Cors
+grpcio
+grpcio-tools
+PyJWT
+flasgger

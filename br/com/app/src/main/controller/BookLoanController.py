@@ -7,6 +7,9 @@ from utils.ApiResponse import ApiResponse
 from domain.exceptions.ConflictException import ConflictException
 from domain.exceptions.NotFoundException import NotFoundException
 from domain.exceptions.InsufficientQuantityException import InsufficientQuantityException
+from domain.exceptions.UnauthorizedException import UnauthorizedException
+from domain.exceptions.MissingTokenException import MissingTokenException
+from auth.JwtAuth import JwtAuth
 from flasgger import swag_from
 import os
 from flask import request
@@ -15,6 +18,7 @@ class BookLoanController:
 
   def __init__(self, app):
     self.app = app
+    self.jwt_auth = JwtAuth()
     self.book_client = BookLoanClient()
     self.default_route = "/loan"
     self.register_routes()
@@ -36,6 +40,8 @@ class BookLoanController:
       )
 
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.create_book_loan(book_loan_dto)
 
@@ -63,6 +69,16 @@ class BookLoanController:
           str(error)
         )
       
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
+        )
+
       except Exception as error:
         return ApiResponse.conflict(
           str(error)
@@ -82,6 +98,8 @@ class BookLoanController:
       )
 
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.update_book_loan(id, book_loan_dto)
 
@@ -99,6 +117,16 @@ class BookLoanController:
           str(error)
         )
       
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
+        )
+
       except Exception as error:
         return ApiResponse.conflict(
           str(error)
@@ -109,6 +137,8 @@ class BookLoanController:
     def find_book_loan_by_id(id):
 
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.find_book_by_id(id)
 
@@ -134,11 +164,23 @@ class BookLoanController:
           str(error)
         )
       
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
+        )
+      
     @self.app.route(self.default_route + "/all/<idClient>", methods=['GET'])
     @swag_from(os.path.join(os.getcwd(), 'docs/bookLoan/find_all_book_loan_by_id.yaml'))
     def find_all_book_loan(idClient):
 
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.find_all_book_loan(idClient)
 
@@ -164,4 +206,14 @@ class BookLoanController:
       except NotFoundException as error:
         return ApiResponse.not_found(
           str(error)
+        )
+      
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
         )

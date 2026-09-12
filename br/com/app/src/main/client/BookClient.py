@@ -10,7 +10,7 @@ from domain.exceptions.NotFoundException import NotFoundException
 class BookClient:
 
   def __init__(self):
-    channel = grpc.insecure_channel("localhost:50051")
+    channel = grpc.insecure_channel("library-api:50051")
     self.stub = book_pb2_grpc.BookServiceStub(channel)
 
   def create_book(self, bookDto):

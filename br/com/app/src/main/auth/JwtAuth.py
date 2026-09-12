@@ -1,7 +1,7 @@
 import jwt
 from datetime import datetime, timedelta, timezone
-from utils.ApiResponse import ApiResponse
 from domain.exceptions.MissingTokenException import MissingTokenException
+from domain.exceptions.UnauthorizedException import UnauthorizedException
 
 class JwtAuth:
 
@@ -37,7 +37,15 @@ class JwtAuth:
       return payload
 
     except jwt.ExpiredSignatureError:
-      raise jwt.ExpiredSignatureError
+      raise UnauthorizedException()
 
     except jwt.InvalidTokenError:
-      raise jwt.InvalidTokenError
+      raise UnauthorizedException()
+
+  def get_token(self, request):
+    token = request.headers.get('Authorization')
+    
+    if token and token.startswith("Bearer "):
+      token = token[7:]
+
+    return token
