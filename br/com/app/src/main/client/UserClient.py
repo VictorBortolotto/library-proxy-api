@@ -10,7 +10,7 @@ from domain.exceptions.UnauthorizedException import UnauthorizedException
 class UserClient:
 
   def __init__(self):
-    channel = grpc.insecure_channel("localhost:50051")
+    channel = grpc.insecure_channel("library-api:50051")
     self.stub = user_pb2_grpc.UserServiceStub(channel)
 
   def create_user(self, userDto):

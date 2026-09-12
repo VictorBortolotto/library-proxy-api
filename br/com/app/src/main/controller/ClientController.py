@@ -4,6 +4,9 @@ from domain.dto.client.UpdateClientDto import UpdateClientDto
 from utils.ApiResponse import ApiResponse
 from domain.exceptions.ConflictException import ConflictException
 from domain.exceptions.NotFoundException import NotFoundException
+from domain.exceptions.UnauthorizedException import UnauthorizedException
+from domain.exceptions.MissingTokenException import MissingTokenException
+from auth.JwtAuth import JwtAuth
 from flasgger import swag_from
 import os
 from flask import request
@@ -13,6 +16,7 @@ class ClientController:
   def __init__(self, app):
     self.app = app
     self.client_client = ClientClient()
+    self.jwt_auth = JwtAuth()
     self.default_route = "/client"
     self.register_routes()
 
@@ -35,6 +39,8 @@ class ClientController:
       )
       
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.client_client.create_client(client_dto)
 
@@ -61,11 +67,22 @@ class ClientController:
           "Client already exists with this user."
         )
       
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
+        )
+
       except Exception:
         return ApiResponse.internal_server_error(
           "Error to create client."
         )
-  
+
+      
     @self.app.route(self.default_route + "/<id>", methods=['PUT'])
     @swag_from(os.path.join(os.getcwd(), 'docs/client/update_client.yaml'))
     def update_client(id):
@@ -82,6 +99,9 @@ class ClientController:
       )
       
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
+
         response = self.client_client.update_client(id, client_dto)
 
         client = {
@@ -103,13 +123,21 @@ class ClientController:
         )
 
       except NotFoundException as error:
-
         return ApiResponse.not_found(
           str(error)
         )
+            
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
       
-      except Exception as error:
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
+        )
 
+      except Exception as error:
         return ApiResponse.internal_server_error(
           str(error)
         )
@@ -119,6 +147,9 @@ class ClientController:
     def deactivate_client(id):
       
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
+
         response = self.client_client.deactivate_client(id)
 
         return ApiResponse.ok(
@@ -126,14 +157,21 @@ class ClientController:
         )
 
       except NotFoundException as error:
-
         return ApiResponse.not_found(
           str(error)
         )
+            
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
+        )
       
       except Exception as error:
-
         return ApiResponse.internal_server_error(
           str(error)
         )
-      

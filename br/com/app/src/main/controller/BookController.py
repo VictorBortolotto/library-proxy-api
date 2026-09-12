@@ -4,6 +4,9 @@ from domain.model.Book import Book
 from utils.ApiResponse import ApiResponse
 from domain.exceptions.ConflictException import ConflictException
 from domain.exceptions.NotFoundException import NotFoundException
+from domain.exceptions.UnauthorizedException import UnauthorizedException
+from domain.exceptions.MissingTokenException import MissingTokenException
+from auth.JwtAuth import JwtAuth
 from flask import request
 
 from flasgger import swag_from
@@ -13,6 +16,7 @@ class BookController:
 
   def __init__(self, app):
     self.app = app
+    self.jwt_auth = JwtAuth()
     self.book_client = BookClient()
     self.default_route = "/book"
     self.register_routes()
@@ -22,7 +26,6 @@ class BookController:
     @self.app.route(self.default_route, methods=['POST'])
     @swag_from(os.path.join(os.getcwd(), 'docs/book/create_book.yaml'))
     def create_book():
-
       json = request.get_json()
 
       bookDto = BookDto(
@@ -32,6 +35,8 @@ class BookController:
       )
 
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.create_book(bookDto)
 
@@ -48,15 +53,23 @@ class BookController:
         )
 
       except ConflictException as error:
-
         return ApiResponse.conflict(
           str(error)
+        )
+      
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
         )
       
     @self.app.route(self.default_route + "/<id>", methods=['PUT'])
     @swag_from(os.path.join(os.getcwd(), 'docs/book/update_book.yaml'))
     def update_book(id):
-
       json = request.get_json()
 
       bookDto = BookDto(
@@ -66,6 +79,8 @@ class BookController:
       )
 
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.update_book(id, bookDto)
 
@@ -82,13 +97,21 @@ class BookController:
         )
 
       except NotFoundException as error:
-
         return ApiResponse.not_found(
           str(error)
         )
+
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
+        )
       
       except Exception as error:
-
         return ApiResponse.internal_server_error(
           str(error)
         )
@@ -97,6 +120,8 @@ class BookController:
     @swag_from(os.path.join(os.getcwd(), 'docs/book/find_all_book.yaml'))
     def find_all_book():
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.find_all_book()
 
@@ -116,15 +141,26 @@ class BookController:
         )
 
       except NotFoundException as error:
-
         return ApiResponse.not_found(
           str(error)
+        )
+      
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
         )
       
     @self.app.route(self.default_route + "/<id>", methods=['GET'])
     @swag_from(os.path.join(os.getcwd(), 'docs/book/find_book_by_id.yaml'))
     def find_book_by_id(id):
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.find_book_by_id(id)
 
@@ -141,15 +177,26 @@ class BookController:
         )
 
       except NotFoundException as error:
-
         return ApiResponse.not_found(
           str(error)
+        )
+      
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
         )
 
     @self.app.route(self.default_route + "/<id>", methods=['DELETE'])
     @swag_from(os.path.join(os.getcwd(), 'docs/book/delete_book.yaml'))
     def delete_book(id):
       try:
+        token = self.jwt_auth.get_token(request)
+        self.jwt_auth.validate_token(token)
 
         response = self.book_client.delete_book(id)
 
@@ -158,13 +205,22 @@ class BookController:
         )
 
       except NotFoundException as error:
-
         return ApiResponse.not_found(
           str(error)
         )
       
-      except Exception as error:
+      except MissingTokenException:
+        return ApiResponse.unauthorized(
+          "Token not found."
+        )
+      
+      except UnauthorizedException:
+        return ApiResponse.unauthorized(
+          "Invalid or expired token."
+        )
 
+      except Exception as error:
         return ApiResponse.internal_server_error(
           str(error)
         )
+      

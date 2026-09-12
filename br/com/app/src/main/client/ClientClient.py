@@ -10,7 +10,7 @@ from domain.exceptions.NotFoundException import NotFoundException
 class ClientClient:
 
   def __init__(self):
-    channel = grpc.insecure_channel("localhost:50051")
+    channel = grpc.insecure_channel("library-api:50051")
     self.stub = client_pb2_grpc.ClientServiceStub(channel)
 
   
