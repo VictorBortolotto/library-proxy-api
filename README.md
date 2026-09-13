@@ -16,38 +16,80 @@ A API Proxy possui como principais responsabilidades a **autenticação dos usu�
 
 A aplicação é composta por duas APIs:
 
-* **Library Proxy API**: porta de entrada da aplicação, responsável pela autenticação, geração/validação de tokens e encaminhamento das requisições.
-* **Library API**: responsável pelas regras de negócio, acesso ao banco de dados e integração com serviços externos.
+* **Library Proxy API**: porta de entrada da aplicação, responsável pela autenticação, geração e validação de tokens JWT e encaminhamento das requisições.
+* **Library API**: responsável pelas regras de negócio, operações de CRUD, acesso ao banco de dados e integração com serviços externos.
 
-A comunicação entre as duas APIs é realizada utilizando **gRPC**.
+A comunicação entre a **Library Proxy API** e a **Library API** é realizada utilizando **gRPC**.
+
+A **Library API** também disponibiliza uma interface HTTP e realiza a comunicação com a API externa **ViaCEP** para consulta de informações de endereço a partir de um CEP.
 
 ```text
-                    ┌──────────────────────┐
-                    │       Cliente        │
-                    └──────────┬───────────┘
-                               │
-                               │ HTTP
-                               ▼
-                    ┌──────────────────────┐
-                    │  Library Proxy API   │
-                    │      :8081           │
-                    │                      │
-                    │ • Autenticação       │
-                    │ • JWT                │
-                    │ • Validação          │
-                    │ • Proxy              │
-                    └──────────┬───────────┘
-                               │
-                               │ gRPC
-                               ▼
-                    ┌──────────────────────┐
-                    │     Library API      │
-                    │      :50051          │
-                    │                      │
-                    │ • Regras de negócio  │
-                    │ • Banco de dados     │
-                    │ • Serviços externos  │
-                    └──────────────────────┘
+                         ┌──────────────────────┐
+                         │       Cliente        │
+                         └──────────┬───────────┘
+                                    │
+                                    │ HTTP
+                                    ▼
+                         ┌──────────────────────┐
+                         │  Library Proxy API   │
+                         │       :8081          │
+                         │                      │
+                         │ • Autenticação       │
+                         │ • JWT                │
+                         │ • Validação          │
+                         │ • Proxy              │
+                         └──────────┬───────────┘
+                                    │
+                                    │ gRPC
+                                    ▼
+              ┌─────────────────────────────────────┐
+              │           Library API               │
+              │                                     │
+              │ HTTP: :8080                         │
+              │ gRPC: :50051                        │
+              │                                     │
+              │ • Regras de negócio                 │
+              │ • Operações CRUD                    │
+              │ • Banco de dados                    │
+              │ • Integrações externas              │
+              └──────────────┬──────────────┬───────┘
+                             │              │
+                             │              │ HTTP
+                             │              ▼
+                             │     ┌──────────────────┐
+                             │     │     ViaCEP API    │
+                             │     │                   │
+                             │     │ • Consulta CEP   │
+                             │     │ • Dados endereço │
+                             │     └──────────────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │      SQLite      │
+                    │                  │
+                    │ • Persistência    │
+                    │ • Tabelas        │
+                    └──────────────────┘
+```
+
+### Fluxo de comunicação
+
+De forma simplificada, uma requisição realizada pelo cliente segue o seguinte fluxo:
+
+```text
+Cliente
+   │
+   │ HTTP
+   ▼
+Library Proxy API
+   │
+   │ gRPC
+   ▼
+Library API
+   │
+   ├──► SQLite
+   │
+   └──► ViaCEP API
 ```
 
 ---
@@ -222,7 +264,7 @@ http://localhost:8081
 
 # Configuração da comunicação gRPC
 
-A comunicação entre a **Library Proxy API** e a **Library API** é realizada através do gRPC.
+A comunicação entre a **Library Proxy API** e a **Library API** é realizada através do **gRPC**.
 
 A configuração do endereço do servidor gRPC depende da forma como a aplicação está sendo executada.
 
@@ -245,6 +287,78 @@ channel = grpc.insecure_channel("localhost:50051")
 ```
 
 > **Importante:** caso a Library API esteja executando localmente na porta `50051`, utilize `localhost:50051`.
+
+---
+
+# Integração com a ViaCEP API
+
+A **Library API** possui uma integração com a **ViaCEP API**, utilizada para consultar informações de endereço a partir de um CEP.
+
+A integração com o serviço externo é realizada pela **Library API**. A API Proxy não acessa diretamente a ViaCEP.
+
+O fluxo da consulta ocorre da seguinte forma:
+
+```text
+Cliente
+   │
+   │ HTTP
+   ▼
+Library Proxy API
+   │
+   │ gRPC
+   ▼
+Library API
+   │
+   │ HTTP
+   ▼
+ViaCEP API
+   │
+   │ JSON
+   ▼
+Library API
+   │
+   │ gRPC
+   ▼
+Library Proxy API
+   │
+   │ HTTP
+   ▼
+Cliente
+```
+
+A consulta à ViaCEP utiliza o seguinte padrão de endpoint:
+
+```text
+https://viacep.com.br/ws/{cep}/json/
+```
+
+Onde `{cep}` deve ser substituído pelo CEP que deseja consultar.
+
+Por exemplo:
+
+```text
+https://viacep.com.br/ws/88870000/json/
+```
+
+A ViaCEP retorna os dados do endereço em formato **JSON**, que são processados pela Library API.
+
+Entre as informações disponibilizadas pelo serviço estão:
+
+* CEP
+* Logradouro
+* Complemento
+* Bairro
+* Localidade
+* UF
+* Estado
+* Região
+* Código IBGE
+* DDD
+* Código SIAFI
+
+A integração com a ViaCEP foi implementada como parte da demonstração de comunicação com um **serviço externo**, contribuindo para os objetivos acadêmicos do projeto.
+
+> **Observação:** A disponibilidade e os dados retornados pela ViaCEP dependem do serviço externo.
 
 ---
 
@@ -329,6 +443,7 @@ Através do Swagger é possível visualizar os endpoints disponíveis, seus par�
 | Serviço           | Protocolo |   Porta |
 | ----------------- | --------- | ------: |
 | Library Proxy API | HTTP      |  `8081` |
+| Library API       | HTTP      |  `8080` |
 | Library API       | gRPC      | `50051` |
 
 ---
@@ -339,9 +454,12 @@ Através do Swagger é possível visualizar os endpoints disponíveis, seus par�
 * A autenticação e o gerenciamento dos tokens JWT são realizados no Proxy.
 * As regras de negócio são executadas pela **Library API**.
 * A comunicação entre as APIs utiliza **gRPC**.
+* A **Library API** é responsável pela comunicação com o banco de dados.
+* A **Library API** realiza a integração com a **ViaCEP API**.
 * Quando executadas através do Docker Compose, as APIs podem se comunicar utilizando os nomes dos respectivos serviços.
 * Quando executadas localmente, a comunicação deve utilizar `localhost`.
 * Para executar as funcionalidades que dependem da API de regras de negócio, é necessário que a **Library API** esteja em execução.
+* Este projeto possui finalidade acadêmica e demonstrativa e não representa necessariamente os requisitos de um sistema real de gerenciamento de bibliotecas.
 
 ---
 
