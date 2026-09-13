@@ -3,6 +3,9 @@ tags:
 
 summary: Find all book loan by ID client
 
+security:
+  - Bearer: []
+
 parameters:
   - name: idClient
     in: path

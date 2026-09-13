@@ -11,6 +11,9 @@ parameters:
       type: integer
     description: Book ID
 
+security:
+  - Bearer: []
+
 responses:
   200:
     description: Book deleted with success.

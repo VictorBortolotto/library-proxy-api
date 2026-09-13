@@ -3,6 +3,9 @@ tags:
 
 summary: Find all books
 
+security:
+  - Bearer: []
+
 responses:
   200:
     description: Find all books.

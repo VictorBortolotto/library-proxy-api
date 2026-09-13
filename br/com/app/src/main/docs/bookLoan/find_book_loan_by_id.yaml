@@ -3,6 +3,9 @@ tags:
 
 summary: Find book loan by ID
 
+security:
+  - Bearer: []
+
 parameters:
   - name: id
     in: path
