@@ -45,8 +45,6 @@ class JwtAuth:
   def get_token(self, request):
     token = request.headers.get('Authorization')
 
-    print("Authorization recebido:", token)
-    
     if token and token.startswith("Bearer "):
       token = token[7:]
 
