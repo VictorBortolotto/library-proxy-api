@@ -57,8 +57,8 @@ A **Library API** também disponibiliza uma interface HTTP e realiza a comunica�
                              │              │ HTTP
                              │              ▼
                              │     ┌──────────────────┐
-                             │     │     ViaCEP API    │
-                             │     │                   │
+                             │     │     ViaCEP API   │
+                             │     │                  │
                              │     │ • Consulta CEP   │
                              │     │ • Dados endereço │
                              │     └──────────────────┘
@@ -67,7 +67,7 @@ A **Library API** também disponibiliza uma interface HTTP e realiza a comunica�
                     ┌──────────────────┐
                     │      SQLite      │
                     │                  │
-                    │ • Persistência    │
+                    │ • Persistência   │
                     │ • Tabelas        │
                     └──────────────────┘
 ```
