@@ -6,6 +6,9 @@ summary: Create book loan
 consumes:
   - application/json
 
+security:
+  - Bearer: []
+
 parameters:
   - in: body
     name: body

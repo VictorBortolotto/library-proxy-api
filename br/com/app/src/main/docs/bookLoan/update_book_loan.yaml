@@ -1,7 +1,10 @@
 tags:
-  - Client
+  - BookLoan
 
-summary: Create client
+summary: Return client
+
+security:
+  - Bearer: []
 
 consumes:
   - application/json

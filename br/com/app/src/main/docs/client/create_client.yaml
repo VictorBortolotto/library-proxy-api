@@ -6,6 +6,9 @@ summary: Create client
 consumes:
   - application/json
 
+security:
+  - Bearer: []
+
 parameters:
   - in: body
     name: body

@@ -1,7 +1,7 @@
 tags:
   - User
 
-summary: Create a new user
+summary: Login
 
 consumes:
   - application/json
@@ -13,9 +13,6 @@ parameters:
     schema:
       type: object
       properties:
-        id:
-          type: integer
-          example: 1
         email:
           type: string
           example: test@teste.com.br

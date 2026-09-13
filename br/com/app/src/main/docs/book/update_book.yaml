@@ -6,6 +6,9 @@ summary: Update book
 consumes:
   - application/json
 
+security:
+  - Bearer: []
+
 parameters:
   - name: id
     in: path

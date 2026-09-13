@@ -3,6 +3,9 @@ tags:
 
 summary: Find Zip Code data
 
+security:
+  - Bearer: []
+
 parameters:
   - name: cep
     in: path

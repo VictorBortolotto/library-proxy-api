@@ -5,12 +5,12 @@ class SwaggerConfig:
     swagger_config = {
       "headers": [],
       "specs": [
-          {
-              "endpoint": "apispec",
-              "route": "/apispec.json",
-              "rule_filter": lambda rule: True,
-              "model_filter": lambda tag: True,
-          }
+        {
+          "endpoint": "apispec",
+          "route": "/apispec.json",
+          "rule_filter": lambda rule: True,
+          "model_filter": lambda tag: True,
+        }
       ],
       "static_url_path": "/flasgger_static",
       "swagger_ui": True,
@@ -18,6 +18,15 @@ class SwaggerConfig:
       "swagger_ui_bundle_js": "https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-bundle.js",
       "swagger_ui_standalone_preset_js": "https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-standalone-preset.js",
       "swagger_ui_css": "https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui.css",
-    }
-    return Swagger(app, config=swagger_config)
 
+      "securityDefinitions": {
+        "Bearer": {
+          "type": "apiKey",
+          "name": "Authorization",
+          "in": "header",
+          "description": "Bearer {seu_token}"
+        }
+      }
+    }
+
+    return Swagger(app, config=swagger_config)
